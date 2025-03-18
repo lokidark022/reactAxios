@@ -86,20 +86,25 @@ const verify = (req, res, next) => {
         res.status(401).json("You are not authenticated" );
     }
 };
+////////////////////////////////////////////////////////////
 app.post("/logout", verify, (req, res) => {
-    // const refreshToken = req.body.token;
-    // refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
-    res.status(200).json("You logged out successfully.");
-  });
+    const refreshToken = req.body.token;
+    refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
+    if(refreshTokens){
+        res.status(200).json({message:refreshToken});
+    }
 
+   
+  });
+/////////////////////////////////////////////////////////
   app.post("/authvalid", verify, (req, res) => {
 
     res.status(200).json("valid");
   });
-
+//////////////////////////////////////////////////////////////
 
 app.delete("/users/:userId",verify,(req,res) => {
-    res.status(200).json("valid actions");
+    res.status(200).json(" delete valid actions");
     // if (req.user.id === req.params.userId || req.user.isAdmin) {
     //     res.status(200).json("User has been deleted.");
     //   } else {
@@ -110,7 +115,7 @@ app.delete("/users/:userId",verify,(req,res) => {
 
 
 const generateAccessToken = (user) => {
-    return jwt.sign({id: user.id,username:user.username}, "mySecretKey", { expiresIn: "5m"});
+    return jwt.sign({id: user.id,username:user.username}, "mySecretKey", { expiresIn: "5s"});
 };
 
 const generateRefrestToken = (user) => {

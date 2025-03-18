@@ -10,16 +10,15 @@ export default function HomePage() {
     const handleDelete = async () => {
         const accessToken = localStorage.getItem('accessToken');
       //  console.log(accessToken);
-       const result = await PostRequestWithHeader('/users/1','delete',{
-            headers: { authorization: "Bearer " + accessToken },
-          });
-          console.log(result);
+       const result = await PostRequestWithHeader('/users/1','delete',accessToken,'');
+         console.log(result);
 
     }
     const handleLogout = async () => {
       const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = localStorage.getItem('refreshToken');
       //  console.log(accessToken);
-       const result = await PostRequestWithHeader('/logout','post',accessToken);
+       const result = await PostRequestWithHeader('/logout','post',accessToken,refreshToken);
           console.log(result);
     };
 

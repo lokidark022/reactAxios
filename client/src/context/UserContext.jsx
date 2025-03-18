@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { axiosJWT } from '../functions/Axios';
+import { axiosInstance, refreshTokens } from '../functions/Axios';
 import React, { createContext, useState } from 'react'
-import { refreshTokens } from '../functions/Axios';
 import { jwtDecode } from "jwt-decode";
 export const UserContext = createContext();
 
@@ -10,12 +9,12 @@ export default function UserContextProvider ({children}){
 
 
 
-  axiosJWT.interceptors.request.use(
+  axiosInstance.interceptors.request.use(
     async (config) => {
     let currentDate = new Date();
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
-  //  console.log(UserData.accessToken);
+   
     const decodedToken = jwtDecode(accessToken);
   //  console.log(decodedToken);
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
@@ -30,7 +29,7 @@ export default function UserContextProvider ({children}){
             accessToken:data.accessToken,
             refreshToken:data.refreshToken,
         });
-       console.log(data);
+    //   console.log(data);
         config.headers["authorization"] = "Bearer " + data.accessToken;
     }
     return config;
