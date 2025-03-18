@@ -22,8 +22,10 @@ export default function UserContextProvider ({children}){
         const data = await refreshTokens(refreshToken);
         localStorage.setItem('refreshToken',data.refreshToken);
         localStorage.setItem('accessToken',data.accessToken);
+        localStorage.setItem('isValid', data.isValid);
        await setUserData({
             ...UserData,
+            isValid:data.isValid,
             email:'newEmail@email.com',
             accessToken:data.accessToken,
             refreshToken:data.refreshToken,

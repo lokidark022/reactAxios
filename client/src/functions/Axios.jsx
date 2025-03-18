@@ -20,16 +20,45 @@ export const PostRequest = async (url,data) => {
     return result
 }
 
-export const PostRequestWithHeader = async (url,data) => {
-    let result;
+// export const PostLagout  = async (url,refreshToken) =>{
+//   let result;
+//   try {
+//     const res = await axios.post("http://localhost:5000" + url, {
+//        headers: { authorization: "Bearer " + refreshToken },
+//      });
+//      result = res.data;
+    
+//    } catch (err) {
 
-    try {
+//    }
+//   return result
+// }
+
+
+
+export const PostRequestWithHeader = async (url,method,data) => {
+    let result;
+    if(method == 'delete'){
+      try {
         const res = await axiosJWT.delete(url, data);
         result = res.data;
       } catch (err) {
         result = err;
        console.log(err);
       }
+
+    }else if(method == 'post'){
+      try {
+        const res = await axiosJWT.post(url, {
+          headers: { authorization: "Bearer " + data },
+        });
+        result = res;
+      } catch (err) {
+        result = err;
+       console.log(err);
+      }
+
+    }
     return result
 }
 
@@ -40,13 +69,6 @@ export const PostRequestWithHeader = async (url,data) => {
     try {
       const res = await axios.post("http://localhost:5000/refresh", { token: refreshToken });
       console.log('refresh token');
-    //  console.log(res.data);
-    //   await setUserData({
-    //     ...UserData,
-    //     accessToken: res.data.accessToken,
-    //     refreshToken: res.data.refreshToken,
-    //   });
-    //  console.log(res.data);
     
       return res.data;
     } catch (err) {
@@ -54,31 +76,6 @@ export const PostRequestWithHeader = async (url,data) => {
     }
   };
 
-
   
-        // axiosJWT.interceptors.request.use(
-        //     async (config) => {
-        //     let currentDate = new Date();
-        //     const accessToken = localStorage.getItem('accessToken');
-        //     const refreshToken = localStorage.getItem('refreshToken');
-        //   //  console.log(UserData.accessToken);
-        //     const decodedToken = jwtDecode(accessToken);
-        //   //  console.log(decodedToken);
-        //     if (decodedToken.exp * 1000 < currentDate.getTime()) {
-        //         const data = await refreshTokens(refreshToken);
-        //         localStorage.setItem('refreshToken',data.refreshToken);
-        //         localStorage.setItem('accessToken',data.accessToken);
-        //         //       await setUserData({
-        //         //     ...UserData,
-        //         //     accessToken:data.accessToken,
-        //         //     refreshToken:data.refreshToken,
-        //         // });
-        //       //  console.log(data);
-        //         config.headers["authorization"] = "Bearer " + data.accessToken;
-        //     }
-        //     return config;
-        //     },
-        //     (error) => {
-        //     return Promise.reject(error);
-        //     }
-        // );
+
+

@@ -18,6 +18,16 @@ export default function LoginPage() {
    await setUserData(data);
     localStorage.setItem('refreshToken',data.refreshToken);
     localStorage.setItem('accessToken',data.accessToken);
+    localStorage.setItem('isValid',data.isValid);
+    await setUserData({
+      ...UserData,
+      isValid:data.isValid,
+      email:email,
+      accessToken:data.accessToken,
+      refreshToken:data.refreshToken,
+  });
+
+
    console.log('saved state navigating to home');
     navigate('/home');
     
