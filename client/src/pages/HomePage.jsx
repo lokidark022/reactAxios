@@ -1,28 +1,30 @@
-import React, { useContext } from 'react'
+import React, { useContext,useEffect } from 'react'
 import { Card,Button } from 'react-bootstrap';
-import { UserContext } from '../context/UserContext';
+import { UserContext ,UserInfoContext} from '../context/UserContext';
 import { PostRequestWithHeader} from '../functions/Axios';
 import axios from 'axios';
 
 export default function HomePage() {
     const {UserData, setUserData} = useContext(UserContext);
-
+    const {UserInfo,setUserInfo} = useContext(UserInfoContext);
+    useEffect(() => {
+      
+      setUserInfo(true);
+    }, []);
+ 
     const handleDelete = async () => {
-        const accessToken = localStorage.getItem('accessToken');
       //  console.log(accessToken);
-       const result = await PostRequestWithHeader('/users/1','delete',accessToken,'');
+       const result = await PostRequestWithHeader('/users/1','delete','delete');
          console.log(result);
 
     }
     const handleLogout = async () => {
-      const accessToken = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
       //  console.log(accessToken);
-       const result = await PostRequestWithHeader('/logout','post',accessToken,refreshToken);
-          console.log(result);
+       const result = await PostRequestWithHeader('/logout','post','logout');
+          //console.log(result);
     };
 
-  return (
+  return (  
     <div>
         <Card>
             <h2>Welcome {UserData.email} </h2>

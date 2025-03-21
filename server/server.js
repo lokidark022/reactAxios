@@ -97,7 +97,7 @@ app.post("/logout", verify, (req, res) => {
    
   });
 /////////////////////////////////////////////////////////
-  app.post("/authvalid", verify, (req, res) => {
+  app.get("/authvalid", verify, (req, res) => {
 
     res.status(200).json("valid");
   });
@@ -206,6 +206,7 @@ app.get("/userinfo", verify, (req,res) => {
         var elementPos = users.map(function(x) {return x.username; }).indexOf(email);
         var objectFound = users[elementPos];
         const userInfo = {
+            isValid:true,
             email:objectFound.username,
             isAdmin:objectFound.isAdmin
         }

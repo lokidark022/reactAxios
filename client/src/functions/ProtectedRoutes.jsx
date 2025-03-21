@@ -1,20 +1,47 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { PostRequestWithHeader } from "./Axios";
-import { useEffect } from "react";
-
+import { useEffect,useContext, useState } from "react";
+import { UserInfoContext } from "../context/UserContext";
 
 const ProtectedRoutes =  () => {
-    // try {   
-    //     const accessToken =  localStorage.getItem('accessToken');
-    //     const result =  PostRequestWithHeader('/authvalid','post',accessToken);
-    //     console.log(result);
+const {UserInfo,setUserInfo} = useContext(UserInfoContext);
+
+  useEffect(() => {
+
+    if(UserInfo === true){
+      console.log('fetching data onload');
+          try {   
+       async function fetchData (){
+        const result = await PostRequestWithHeader('/userinfo','get','userdata');
+        console.log(result.isValid && result !== undefined);
+        if(result.isValid === true){
+         // console.log('outlete true')
+          return <Outlet /> ;
+        }else{
+       //   console.log('outlete false')
+          console.log('redirect to invalid page and clearing data');
+           window.location.href = '/invalid';
+        }
+        //return result.isValid ? <Outlet /> : <Navigate to="/invalid" />;
+
+  
+        }
         
-    // } catch (error) {
+        fetchData();
+ 
         
-    // }
+    } catch (error) {
    
-  const isAuth = true;
-  return isAuth ? <Outlet /> : <Navigate to="/invalid" />;
+    }
+    }
+
+  },[UserInfo])
+//  console.log('outlete')
+  return <Outlet/>
+
+  // const isAuth = true;
+  // return isAuth ? <Outlet /> : <Navigate to="/invalid" />;
+
 };
 export default ProtectedRoutes;
 

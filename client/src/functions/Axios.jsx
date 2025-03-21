@@ -1,14 +1,10 @@
 import axios from 'axios'
-import { jwtDecode } from "jwt-decode";
+
 export const axiosInstance = axios.create({
     baseURL:"http://localhost:5000"
 
   })
 
-  export const axiosPostMethod = axios.create({
-    baseURL:"http://localhost:5000"
-
-  })
 export function Axios() {
 
 }
@@ -32,19 +28,25 @@ function validateResult (result) {
    // console.log('all goods');
     return true;
   }else if(result.status === 403 || result.status === 401){
-    localStorage.clear();
+   localStorage.clear();
     console.log('redirect to invalid page and clearing data');
-    window.location.href = '/invalid';
+   window.location.href = '/invalid';
     return false;
   }
 
 }
 
-export const PostRequestWithHeader = async (url,method,data,refreshToken) => {
-  axiosInstance.defaults.headers.common['Authorization'] = "Bearer " + data;
+export const PostRequestWithHeader = async (url,method,func) => {
+  const accessToken = await localStorage.getItem('accessToken');
+  const refreshToken = await localStorage.getItem('refreshToken');
+
+
+
+
+   axiosInstance.defaults.headers.common['Authorization'] = "Bearer " + accessToken;
     let result;
     
-    if(method == 'delete'){
+    if(method == 'delete' && func == 'delete'){
       try {
         const res = await axiosInstance.delete(url);
         if(validateResult(res) === true){
@@ -57,10 +59,13 @@ export const PostRequestWithHeader = async (url,method,data,refreshToken) => {
        //console.log(err);
       }
 
-    }else if(method == 'post'){
+    }else if(method == 'post' && func == 'logout'){
       try {
         const res = await axiosInstance.post(url,{token:refreshToken});
         if(validateResult(res) === true){
+          localStorage.clear();
+          console.log('redirect to invalid page and clearing data');
+           window.location.href = '/invalid';
           result = res.data;
         }
       } catch (err) {
@@ -69,23 +74,30 @@ export const PostRequestWithHeader = async (url,method,data,refreshToken) => {
       }
 
     }
-    return result
+    else if(method == 'get' && func == 'userdata'){
+      try {
+        const res = await axiosInstance.get(url);
+  
+          result = res.data;
+     
+      } catch (err) {
+        result = err;
+      // console.log(err);
+      }
+
+    }
+    return result  
 }
-
-
-
-
- export const refreshTokens = async (refreshToken) => {
+ export const refreshTokens = async () => {
     try {
+      const refreshToken = await localStorage.getItem('refreshToken');
       const res = await axios.post("http://localhost:5000/refresh", { token: refreshToken });
       console.log('refresh token');
       if(validateResult(res) === true){
         return res.data;
-      }
-     
+     }
     } catch (err) {
         validateResult(err);
-      //console.log(err.status);
     }
   };
 
