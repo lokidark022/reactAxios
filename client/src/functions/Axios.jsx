@@ -27,7 +27,7 @@ function validateResult (result) {
   if(result.status === 200){
    // console.log('all goods');
     return true;
-  }else if(result.status === 403 || result.status === 401){
+  }else if(result.status === 403 || result.status === 401 || result.status === 500){
    localStorage.clear();
     console.log('redirect to invalid page and clearing data');
    window.location.href = '/invalid';

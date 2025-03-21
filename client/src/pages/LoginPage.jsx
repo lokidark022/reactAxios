@@ -41,8 +41,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
-      <Card>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+      <Card style={{maxHeight:"400px",maxWidth:"500px"}}>
         <h4>Login</h4>
         <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email" />
         <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter password" />

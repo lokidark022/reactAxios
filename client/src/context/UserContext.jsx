@@ -23,8 +23,6 @@ export default function UserContextProvider ({children}){
             localStorage.setItem('isValid', data.isValid);
             await setUserData({
                 ...UserData,
-                isValid:data.isValid,
-                email:'newEmail@email.com',
                 accessToken:data.accessToken,
                 refreshToken:data.refreshToken,
             });
