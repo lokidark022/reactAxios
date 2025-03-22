@@ -3,7 +3,8 @@ import { Form ,Card, Button} from 'react-bootstrap';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { PostRequest } from '../functions/Axios';
-
+import { Container } from 'react-bootstrap';
+import '../pages/css/style.css'
 export default function LoginPage() {
 
 
@@ -41,15 +42,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-      <Card style={{maxHeight:"400px",maxWidth:"500px"}}>
-        <h4>Login</h4>
-        <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email" />
-        <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter password" />
-        <Button  variant="outline-danger" onClick={() => handleLogin()}>
-          Login
-        </Button>
-      </Card>
+    <div >
+      <Container>
+        <div className='loginpage-body'>
+        <Card className='loginpage-card'>
+          <h4>Login</h4>
+          <Form.Control onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email" />
+          <Form.Control onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter password" />
+          <Button  variant="outline-danger" onClick={() => handleLogin()}>
+            Login
+          </Button>    <a href="/register">Register</a>
+      
+        </Card>
+        </div>
+      </Container>
+
 
 
     </div>

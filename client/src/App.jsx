@@ -9,6 +9,7 @@ import LandingPage from './pages/LandingPage';
 import ProtectedRoutes from './functions/ProtectedRoutes';
 import Invalid from './pages/Invalid';
 import NotFound from './pages/NotFound';
+import RegisterPage from './pages/RegisterPage';
 
 export default function () {  
 
@@ -23,6 +24,8 @@ export default function () {
       <Route element={<ProtectedRoutes />}>
         <Route path='/home' element={<HomePage/>}></Route>
       </Route>
+
+        <Route path='/register' element={<RegisterPage/>}></Route>
         <Route path='/login' element={<LoginPage/>}></Route>
         <Route path='/invalid' element={<Invalid/>}></Route>
         <Route path='/' element={<LandingPage/>}></Route>

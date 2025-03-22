@@ -3,6 +3,7 @@ import { Card,Button } from 'react-bootstrap';
 import { UserContext ,UserInfoContext} from '../context/UserContext';
 import { PostRequestWithHeader} from '../functions/Axios';
 import Header from './layout/Header';
+import '../pages/css/style.css'
 export default function HomePage() {
     const {UserData, setUserData} = useContext(UserContext);
     const {UserInfo,setUserInfo} = useContext(UserInfoContext);

@@ -23,15 +23,13 @@ const db = mysql.createConnection({
 
 
 
-const users = [
+let users = [
     {
-      id: "1",
       username: "admin@admin.com",
       password: "admin",
       isAdmin: true,
     },
     {
-      id: "2",
       username: "admin2@admin.com",
       password: "admin2",
       isAdmin: false,
@@ -157,7 +155,24 @@ app.post('/api/login', (req, res) => {
 
 })
 
+app.post('/api/register', (req, res) => {
+    const newEmail = req.body.email;
+    const newPassword = req.body.password;
+    const newUser = {username:newEmail,password:newPassword,isAdmin:false}
+    const user = users.find((u) => {
+        return u.username === req.body.email;
+    });
+    if(!user){
+        users.push(newUser);
+        res.json({tmessage: "User Registered",bmessage:"User successfully registered.",isValid:true});
+    }else{
+        res.json({tmessage: "User Already Registered",bmessage:"User Already Registered please try different user.",isValid:false});
+    }
+   
 
+  
+
+})
 app.post('/login_sql',(req,res) =>{
     const values = [
         req.body.email,

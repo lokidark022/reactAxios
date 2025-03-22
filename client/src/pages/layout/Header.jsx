@@ -1,7 +1,8 @@
 import React, { useContext,useState } from 'react';
-import { Container, Navbar ,NavDropdown,Modal,Button} from 'react-bootstrap';
+import { Container, Navbar ,Modal,Button} from 'react-bootstrap';
 import { UserContext } from '../../context/UserContext';
 import { PostRequestWithHeader } from '../../functions/Axios';
+
 const Header = () => {
     const {UserData, setUserData} = useContext(UserContext);
     const [modalShow, setModalShow] = useState(false);
@@ -14,7 +15,9 @@ const Header = () => {
                 <Navbar.Brand href="#home">Navbar</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
+                    
                     <Navbar.Text>
+                      
                         Signed in as: <a onClick={() => setModalShow(true)}  href="#">{UserData.email}</a>
                     </Navbar.Text>
                 </Navbar.Collapse>
