@@ -21,3 +21,42 @@
   
     margin-left: 5px;
 }
+
+
+.homepage-body {
+    overflow-y: auto;
+    max-height: 70vh;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:relative;
+}
+
+.list-contact-body{
+
+    scrollbar-width: thin;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+
+
+
+
+
+.contact-container{
+    max-width: 120px;
+}
+.contact-container:hover {
+    opacity: 0.6;
+}
+.contact-container p {
+    padding-left: 30px;
+    display: inline-block; 
+    max-width: 90%;
+    height: 20px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
