@@ -1,28 +1,41 @@
 .message-body{
-    width: 100%;
-    height: 80vh;
-    background-color: #fff;
-    padding: 20px;
+    height: 75vh;
     overflow-y: scroll;
+    overflow-x:hidden;
     scrollbar-width: thin;
 }
 
 .chat-you {
-    width: 300;
-    display: table;
-    
-    min-width: 200px;
-    margin-right: auto;
-    background-color: aquamarine;
-    text-align: end;
 
-}
-.chat-other {
-    background-color: coral;
+
+    border-radius: 15px 15px 0px 15px;
     display: table;
-    min-width: 200px;
+    background-color: aquamarine;
+    margin-top: 10px;
+    min-width: 50px;
+    height: auto;
     width: auto;
     margin-left: auto;
-    text-align: start;
+    padding: 10px 20px 10px 20px;
+    text-align: end;
+}
+.chat-you p{
+    text-align:none;
+}
+.chat-you h6{
+    font-size: 10px;
+}
+.chat-other {
+    border-radius: 15px 15px 15px 0px;
+    display: table;
+    width: auto;
+    min-width: 50px;
+    margin-right: auto;
+    background-color: coral;
+    padding: 10px 20px 10px 20px;
+    margin-top: 10px;
 
+}
+.chat-other h6{
+    font-size: 10px;
 }

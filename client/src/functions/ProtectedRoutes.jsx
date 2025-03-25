@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { PostRequestWithHeader } from "./Axios";
 import { useEffect,useContext, useState } from "react";
-import { UserContext, UserInfoContext } from "../context/UserContext";
+import { UserContext, UserInfoContext} from "../context/UserContext";
 
 const ProtectedRoutes =  () => {
 const {UserInfo,setUserInfo} = useContext(UserInfoContext);
 const {UserData, setUserData} = useContext(UserContext);
+
   useEffect(() => {
 
     if(UserInfo === true){
@@ -14,7 +15,7 @@ const {UserData, setUserData} = useContext(UserContext);
        async function fetchData (){
         const result = await PostRequestWithHeader('/userinfo','get','userdata');
         setUserData(result);
-        //console.log(result);
+
         if(result.isValid === true && result !== undefined){
          // console.log('outlete true')
           return <Outlet /> ;

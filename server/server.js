@@ -93,11 +93,7 @@ const verify = (req, res, next) => {
 
 ////////////////////////////////////////////////////////////
 const socket_PORT = 5001;
-app.get('/socket', (req, res) => {
-    res.json({
-      message: 'Hello world',
-    });
-  });
+
 
   //New imports
   //New imports
@@ -107,16 +103,17 @@ const socketIO = require('socket.io')(http, {
         origin: "http://localhost:5173"
     }
 });
-
+let GlobalMessages  = new Array();
 //Add this before the app.get() block
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
-    
+
   //Listens and logs the message to the console
   socket.on('message', (data) => {
-    socketIO.emit('messageResponse', data);
-   // console.log(data);
+    GlobalMessages.push(data);
+    socketIO.emit('messageResponse', GlobalMessages);
+ //   console.log(GlobalMessages);
   });
 
   socket.on('disconnect', () => {
@@ -124,8 +121,14 @@ socketIO.on('connection', (socket) => {
   });
 });
 
+app.get('/globalmessage', (req, res) => {
+    res.json({
+      message: GlobalMessages,
+    });
+  });
+
 http.listen(socket_PORT, () => {
-    console.log(`Socket Server Running!. ${socket_PORT}`);
+    console.log(`Chat Server Running!. PORT ${socket_PORT}`);
   });
 
 ////////////////////////////////////////////////////////////

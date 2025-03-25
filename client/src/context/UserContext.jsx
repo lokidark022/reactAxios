@@ -6,6 +6,7 @@ export const UserContext = createContext();
 export const UserInfoContext = createContext();
 export default function UserContextProvider ({children}){
   const [UserData, setUserData] = useState({'email':'email@email.com'});
+
   const [UserInfo,setUserInfo] = useState();
   axiosInstance.interceptors.request.use(
     async (config) => {
@@ -43,11 +44,14 @@ export default function UserContextProvider ({children}){
 
 
     return (
-        <UserContext.Provider value={{UserData, setUserData}}>
-            <UserInfoContext.Provider value={{UserInfo,setUserInfo}}>
-               {children}
-            </UserInfoContext.Provider>
-        </UserContext.Provider>
+            <UserContext.Provider value={{UserData, setUserData}}>
+                <UserInfoContext.Provider value={{UserInfo,setUserInfo}}>
+                
+                        {children}
+            
+                </UserInfoContext.Provider>
+            </UserContext.Provider>
+
     )
 
 

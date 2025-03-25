@@ -5,18 +5,24 @@ const MessageFooter = ({socket}) => {
     const {UserData, setUserData} = useContext(UserContext);
     const [message , setMessage] = useState("");
     const handleSend = () => {
+        
         socket.emit('message', {
             text: message,
             name: UserData.email,
             id: `${socket.id}${Math.random()}`,
             socketID: socket.id,
           });
+          document.getElementById('textMessage').value = "";
+
     }
     return (
-        <div>
-            <h5>Welcome {UserData.email}</h5>
-            <input onChange={(e) => setMessage(e.target.value)} type="text" name="" id="" placeholder='Send Message' />
-            <button onClick={() => handleSend()}> Send</button>
+        <div >
+
+<div class="input-group">
+      <textarea id='textMessage' wrap="on" style={{resize:"none"}} onChange={(e) => setMessage(e.target.value)} class="form-control custom-control" rows="1"></textarea>     
+      <span  onClick={() => handleSend()} class="input-group-addon btn btn-primary">Send</span>
+  </div>
+
         </div>
     );
 }
