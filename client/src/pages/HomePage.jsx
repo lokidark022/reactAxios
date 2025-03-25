@@ -1,4 +1,7 @@
 import React, { useContext,useEffect, useState } from 'react'
+import socketIO from 'socket.io-client';
+const socket = socketIO.connect('http://localhost:5001');
+
 import { Card,Button, Container,Form } from 'react-bootstrap';
 import { UserContext ,UserInfoContext} from '../context/UserContext';
 import { PostRequestWithHeader} from '../functions/Axios';
@@ -6,6 +9,10 @@ import Header from './layout/Header';
 import '../pages/css/style.css'
 import Contacts from './components/Contacts';
 import Messages from './components/Messages';
+
+
+
+
 export default function HomePage() {
     const {UserData, setUserData} = useContext(UserContext);
     const {UserInfo,setUserInfo} = useContext(UserInfoContext);
@@ -63,10 +70,10 @@ export default function HomePage() {
               <div id='side-col' className="col-lg-3 col-sm-0 d-none d-lg-block ">
                 <Contacts></Contacts>
               </div>
-              <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages></Messages> </div>
+              <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages socket={socket}></Messages> </div>
             </div>
           
-    
+
           </div>
           
         </Container>

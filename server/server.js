@@ -85,6 +85,76 @@ const verify = (req, res, next) => {
     }
 };
 ////////////////////////////////////////////////////////////
+
+
+
+
+
+
+////////////////////////////////////////////////////////////
+const socket_PORT = 5001;
+app.get('/socket', (req, res) => {
+    res.json({
+      message: 'Hello world',
+    });
+  });
+
+  //New imports
+  //New imports
+const http = require('http').Server(app);
+const socketIO = require('socket.io')(http, {
+    cors: {
+        origin: "http://localhost:5173"
+    }
+});
+
+//Add this before the app.get() block
+socketIO.on('connection', (socket) => {
+    console.log(`⚡: ${socket.id} user just connected!`);
+
+    
+  //Listens and logs the message to the console
+  socket.on('message', (data) => {
+    socketIO.emit('messageResponse', data);
+   // console.log(data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('🔥: A user disconnected');
+  });
+});
+
+http.listen(socket_PORT, () => {
+    console.log(`Socket Server Running!. ${socket_PORT}`);
+  });
+
+////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////
 app.post("/logout", verify, (req, res) => {
     const refreshToken = req.body.token;
     refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
