@@ -20,7 +20,7 @@
     text-align: end;
 }
 .chat-you p{
-    text-align:none;
+    text-align:justify;
 }
 .chat-you h6{
     font-size: 10px;

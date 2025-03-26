@@ -1,5 +1,5 @@
 import React, { useState ,useEffect,useContext} from 'react';
-import { UserContext } from '../../context/UserContext';
+import { UserContext,GlobalMessageContext } from '../../context/UserContext';
 import '../css/message_style.css'
 import { Card,Row,Col } from 'react-bootstrap';
 
@@ -9,27 +9,33 @@ const MessageBody = ({socket}) => {
 
     const [messages, setMessages] = useState([]);
     const {UserData, setUserData} = useContext(UserContext);
-
+    const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
 
     useEffect(() => {
       
       socket.on('messageResponse', (data) => setMessages(data));
-      console.log(messages);
+      //console.log(messages);
       var objDiv = document.getElementById("message-body");
         objDiv.scrollTop = objDiv.scrollHeight;
 
     }, [socket, messages]);
-
+    useEffect(() =>{
+        if(GlobalMessages !== undefined ){
+         //   console.log(GlobalMessages[0].text);
+            setMessages(GlobalMessages);
+          }
+        
+    },[GlobalMessages])
     
     return (
     <>
      
             <Row  >
-                <ul id='message-body' className='message-body'>
+                <ul   id='message-body' className='message-body'>
                 Global Chat
                    {messages.map((message) => message.name === UserData.email?(
                         
-                        <li className=' chat-you'>
+                        <li key={message.id} className=' chat-you'>
                             <h6>You</h6>
                         <p>{message.text}</p>
 
@@ -37,7 +43,7 @@ const MessageBody = ({socket}) => {
                 
                     ) : (
 
-                        <li className=' chat-other'>
+                        <li key={message.id} className=' chat-other'>
                             <h6>{message.name}</h6>
                         <p>{message.text}</p>
 

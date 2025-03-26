@@ -4,9 +4,10 @@ import React, { createContext, use, useState } from 'react'
 import { jwtDecode } from "jwt-decode";
 export const UserContext = createContext();
 export const UserInfoContext = createContext();
+export const GlobalMessageContext = createContext();
 export default function UserContextProvider ({children}){
   const [UserData, setUserData] = useState({'email':'email@email.com'});
-
+  const [GlobalMessages ,setGlobalMessages] = useState();
   const [UserInfo,setUserInfo] = useState();
   axiosInstance.interceptors.request.use(
     async (config) => {
@@ -44,13 +45,15 @@ export default function UserContextProvider ({children}){
 
 
     return (
-            <UserContext.Provider value={{UserData, setUserData}}>
-                <UserInfoContext.Provider value={{UserInfo,setUserInfo}}>
+            <GlobalMessageContext.Provider value={{GlobalMessages ,setGlobalMessages}}>
+                <UserContext.Provider value={{UserData, setUserData}}>
+                    <UserInfoContext.Provider value={{UserInfo,setUserInfo}}>
+                    
+                            {children}
                 
-                        {children}
-            
-                </UserInfoContext.Provider>
-            </UserContext.Provider>
+                    </UserInfoContext.Provider>
+                </UserContext.Provider>
+            </GlobalMessageContext.Provider>
 
     )
 

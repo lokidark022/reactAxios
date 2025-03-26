@@ -86,6 +86,18 @@ export const PostRequestWithHeader = async (url,method,func) => {
       }
 
     }
+    else if(method == 'get' && func == 'globalmessage'){
+      try {
+        const res = await axiosInstance.get(url);
+  
+          result = res.data;
+     
+      } catch (err) {
+        result = err;
+      // console.log(err);
+      }
+
+    }
     return result  
 }
  export const refreshTokens = async () => {

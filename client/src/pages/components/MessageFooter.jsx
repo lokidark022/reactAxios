@@ -18,9 +18,9 @@ const MessageFooter = ({socket}) => {
     return (
         <div >
 
-<div class="input-group">
-      <textarea id='textMessage' wrap="on" style={{resize:"none"}} onChange={(e) => setMessage(e.target.value)} class="form-control custom-control" rows="1"></textarea>     
-      <span  onClick={() => handleSend()} class="input-group-addon btn btn-primary">Send</span>
+<div className="input-group">
+      <textarea id='textMessage' wrap="on" style={{resize:"none"}} onChange={(e) => setMessage(e.target.value)} className="form-control custom-control" rows="1"></textarea>     
+      <span  onClick={() => handleSend()} className="input-group-addon btn btn-primary">Send</span>
   </div>
 
         </div>
