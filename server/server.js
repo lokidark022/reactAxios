@@ -103,6 +103,7 @@ const socketIO = require('socket.io')(http, {
         origin: "http://localhost:5173"
     }
 });
+let ActiveUsers = [];
 let GlobalMessages  = new Array();
 //Add this before the app.get() block
 socketIO.on('connection', (socket) => {
@@ -116,8 +117,25 @@ socketIO.on('connection', (socket) => {
  //   console.log(GlobalMessages);
   });
 
+  
+  //Listens when a new user joins the server
+  socket.on('newUser', (data) => {
+    //Adds the new user to the list of users
+    
+    ActiveUsers.push(data);
+    //console.log(ActiveUsers.length);
+    //Sends the list of users to the client
+    socketIO.emit('newUserResponse', ActiveUsers);
+  });
+
+
   socket.on('disconnect', () => {
     console.log('🔥: A user disconnected');
+        //Updates the list of users when a user disconnects from the server
+        ActiveUsers = ActiveUsers.filter((user) => user.socketID !== socket.id);
+        // console.log(users);
+        //Sends the list of users to the client
+        socketIO.emit('newUserResponse', ActiveUsers);
   });
 });
 

@@ -10,7 +10,7 @@ const MessageBody = ({socket}) => {
     const [messages, setMessages] = useState([]);
     const {UserData, setUserData} = useContext(UserContext);
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
-
+    const [GlobalUsers, setGlobalUsers] = useState([]);
     useEffect(() => {
       
       socket.on('messageResponse', (data) => setMessages(data));
@@ -22,17 +22,25 @@ const MessageBody = ({socket}) => {
     useEffect(() =>{
         if(GlobalMessages !== undefined ){
          //   console.log(GlobalMessages[0].text);
+         socket.emit('newUser', { email:UserData.email, socketID: socket.id });
             setMessages(GlobalMessages);
           }
         
     },[GlobalMessages])
+
     
+  useEffect(() => {
+    socket.on('newUserResponse', (data) => setGlobalUsers(data));
+   // console.log(GlobalUsers.length);
+  }, [socket, GlobalUsers]);
+
     return (
     <>
      
             <Row  >
                 <ul   id='message-body' className='message-body'>
                 Global Chat
+                <h6>Active User's: {GlobalUsers.length}</h6>
                    {messages.map((message) => message.name === UserData.email?(
                         
                         <li key={message.id} className=' chat-you'>
