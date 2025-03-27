@@ -1,7 +1,7 @@
 import React, { useContext ,useState} from 'react';
 import { UserContext } from '../../context/UserContext';
 
-const MessageFooter = ({socket}) => {
+const MessageFooter = ({socket,userData}) => {
     const {UserData, setUserData} = useContext(UserContext);
     const [message , setMessage] = useState("");
     const handleSend = () => {
@@ -15,11 +15,15 @@ const MessageFooter = ({socket}) => {
           document.getElementById('textMessage').value = "";
 
     }
+    const handleTyping = () =>{
+        socket.emit('typing', `${userData.email} is typing`);
+    }
     return (
         <div >
 
 <div className="input-group">
-      <textarea id='textMessage' wrap="on" style={{resize:"none"}} onChange={(e) => setMessage(e.target.value)} className="form-control custom-control" rows="1"></textarea>     
+      <textarea  id='textMessage' wrap="on" style={{resize:"none"}} onChange={(e) => setMessage(e.target.value)}
+      onKeyDown={handleTyping} className="form-control custom-control" rows="1"></textarea>     
       <span  onClick={() => handleSend()} className="input-group-addon btn btn-primary">Send</span>
   </div>
 

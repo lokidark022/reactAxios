@@ -127,7 +127,8 @@ socketIO.on('connection', (socket) => {
     //Sends the list of users to the client
     socketIO.emit('newUserResponse', ActiveUsers);
   });
-
+  //User typing mode
+  socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
 
   socket.on('disconnect', () => {
     console.log('🔥: A user disconnected');

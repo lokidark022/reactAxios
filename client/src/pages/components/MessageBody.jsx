@@ -1,32 +1,31 @@
 import React, { useState ,useEffect,useContext} from 'react';
-import { UserContext,GlobalMessageContext } from '../../context/UserContext';
+import { GlobalMessageContext } from '../../context/UserContext';
 import '../css/message_style.css'
 import { Card,Row,Col } from 'react-bootstrap';
 
 
 
-const MessageBody = ({socket,headerData}) => {
+const MessageBody = ({socket,headerData,messages,lastMessageRef,typingStatus,userData}) => {
     
     
-    const [messages, setMessages] = useState([]);
-    const {UserData, setUserData} = useContext(UserContext);
+  
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
     const [GlobalUsers, setGlobalUsers] = useState([]);
     useEffect(() => {
       
-      socket.on('messageResponse', (data) => setMessages(data));
+      socket.on('messageResponse', (data) => messages.setMessages(data));
       //console.log(messages);
       var objDiv = document.getElementById("message-body");
         objDiv.scrollTop = objDiv.scrollHeight;
 
-    }, [socket, messages]);
+    }, [socket, messages.messages]);
     useEffect(() =>{
         if(GlobalMessages !== undefined ){
          //   console.log(GlobalMessages[0].text);
 
-         socket.emit('newUser', { email:UserData.email, socketID: socket.id });
+         socket.emit('newUser', { email:userData.UserData.email, socketID: socket.id });
         
-            setMessages(GlobalMessages);
+            messages.setMessages(GlobalMessages);
           }
         
     },[GlobalMessages])
@@ -49,7 +48,7 @@ const MessageBody = ({socket,headerData}) => {
      
             <Row  >
                 <ul   id='message-body' className='message-body'>
-                   {messages.map((message) => message.name === UserData.email?(
+                   {messages.messages.map((message) => message.name === userData.UserData.email?(
                         
                         <li key={message.id} className=' chat-you'>
                             <h6>You</h6>
@@ -69,6 +68,12 @@ const MessageBody = ({socket,headerData}) => {
                 </ul>
 
         </Row>
+        <div ref={lastMessageRef}>
+        <div className="message__status">
+        <p>{typingStatus}</p>
+        </div>
+
+        </div>
     
     </>
 
