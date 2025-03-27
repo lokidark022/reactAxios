@@ -5,8 +5,9 @@ import { Card,Row,Col } from 'react-bootstrap';
 
 
 
-const MessageBody = ({socket}) => {
-
+const MessageBody = ({socket,headerData}) => {
+    
+    
     const [messages, setMessages] = useState([]);
     const {UserData, setUserData} = useContext(UserContext);
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
@@ -22,7 +23,9 @@ const MessageBody = ({socket}) => {
     useEffect(() =>{
         if(GlobalMessages !== undefined ){
          //   console.log(GlobalMessages[0].text);
+
          socket.emit('newUser', { email:UserData.email, socketID: socket.id });
+        
             setMessages(GlobalMessages);
           }
         
@@ -30,17 +33,22 @@ const MessageBody = ({socket}) => {
 
     
   useEffect(() => {
-    socket.on('newUserResponse', (data) => setGlobalUsers(data));
+    socket.on('newUserResponse', (data) => 
+        setGlobalUsers(data)
+
+);
    // console.log(GlobalUsers.length);
   }, [socket, GlobalUsers]);
+
+  useEffect(() => {
+    headerData.setHeaderData(GlobalUsers);
+  },[GlobalUsers])
 
     return (
     <>
      
             <Row  >
                 <ul   id='message-body' className='message-body'>
-                Global Chat
-                <h6>Active User's: {GlobalUsers.length}</h6>
                    {messages.map((message) => message.name === UserData.email?(
                         
                         <li key={message.id} className=' chat-you'>
