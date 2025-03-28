@@ -129,7 +129,7 @@ socketIO.on('connection', (socket) => {
   });
   //User typing mode
   socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
-
+  socket.on('not_typing', (data) => socket.broadcast.emit('notTypingResponse'));
   socket.on('disconnect', () => {
     console.log('🔥: A user disconnected');
         //Updates the list of users when a user disconnects from the server

@@ -9,24 +9,48 @@ function Messages({socket}) {
   const [typingStatus, setTypingStatus] = useState('');
   const [messages, setMessages] = useState([]);
   const lastMessageRef = useRef(null);
+  const [clearTypingStatus, setClearTypingStatus] = useState(false);
+
+
 
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
     lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
+
   }, [messages]);
+
+  function TypingStatus (data) {
+    setClearTypingStatus(false);
+    setTypingStatus(data);
+    //console.log(clearTypingStatus);
+  }
+  function ClearTypingStatus (data){
+    setClearTypingStatus(data);
+    //console.log(clearTypingStatus);
+  }
   useEffect(() => {
-    socket.on('typingResponse', (data) => setTypingStatus(data));
+    socket.on('typingResponse',(data) => TypingStatus(data));
+    socket.on('notTypingResponse', () =>  ClearTypingStatus(true));
   }, [socket]);
+  // useEffect(() =>{
+  //   typingStatusDisplay();
+  // },[typingStatus])
+
+  //console.log(clearTypingStatus);
+
   return (
 
-    <div>
+    <div> 
+    
+
                <MessageHeader headerData={{HeaderData, setHeaderData}}></MessageHeader>
                <MessageBody socket={socket}
                   headerData={{HeaderData, setHeaderData}}
                   messages={{messages, setMessages}}
                   lastMessageRef={lastMessageRef}
-                  typingStatus={typingStatus}
-                  userData={{UserData, setUserData}}>
+                  TypingStatus={{typingStatus, setTypingStatus}}
+                  userData={{UserData, setUserData}}
+                  ClearTypingStatus={{clearTypingStatus, setClearTypingStatus}}>
                </MessageBody>
                <MessageFooter socket={socket} userData={UserData}></MessageFooter>
     </div>

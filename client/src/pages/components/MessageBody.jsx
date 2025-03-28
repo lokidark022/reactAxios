@@ -5,19 +5,23 @@ import { Card,Row,Col } from 'react-bootstrap';
 
 
 
-const MessageBody = ({socket,headerData,messages,lastMessageRef,typingStatus,userData}) => {
+const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,userData,ClearTypingStatus}) => {
     
     
-  
+    
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
     const [GlobalUsers, setGlobalUsers] = useState([]);
+
+
+
     useEffect(() => {
       
       socket.on('messageResponse', (data) => messages.setMessages(data));
-      //console.log(messages);
+      console.log('clear typing status');
+      TypingStatus.setTypingStatus(null);
       var objDiv = document.getElementById("message-body");
         objDiv.scrollTop = objDiv.scrollHeight;
-
+       
     }, [socket, messages.messages]);
     useEffect(() =>{
         if(GlobalMessages !== undefined ){
@@ -42,6 +46,9 @@ const MessageBody = ({socket,headerData,messages,lastMessageRef,typingStatus,use
   useEffect(() => {
     headerData.setHeaderData(GlobalUsers);
   },[GlobalUsers])
+
+
+
 
     return (
     <>
@@ -69,8 +76,8 @@ const MessageBody = ({socket,headerData,messages,lastMessageRef,typingStatus,use
 
         </Row>
         <div ref={lastMessageRef}>
-        <div className="message__status">
-        <p>{typingStatus}</p>
+        <div id='typingStatus' className="message__status ">
+        <p>{ClearTypingStatus.clearTypingStatus ? '' : TypingStatus.typingStatus}</p>
         </div>
 
         </div>
