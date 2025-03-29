@@ -103,6 +103,67 @@ const socketIO = require('socket.io')(http, {
         origin: "http://localhost:5173"
     }
 });
+
+let MyConvo = {
+    "room": [
+      {
+        "roomId": "321",
+        "members": [
+          {
+            "email": "admin@admin.com"
+          },
+          {
+            "email": "admin2@admin.com"
+          }
+        ],
+        "messages": [
+          {
+            "message": "text",
+            "sender": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "message": "text",
+            "email": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "message": "text",
+            "email": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          }
+        ]
+      },
+      {
+        "roomId": "123",
+        "members": [
+          {
+            "email": "admin3@admin.com"
+          },
+          {
+            "email": "admin4@admin.com"
+          }
+        ],
+        "messages": [
+          {
+            "message": "text",
+            "sender": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "message": "text",
+            "email": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "message": "text",
+            "email": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          }
+        ]
+      }
+    ]
+  };
 let ActiveUsers = [];
 let GlobalMessages  = new Array();
 //Add this before the app.get() block
@@ -117,7 +178,39 @@ socketIO.on('connection', (socket) => {
  //   console.log(GlobalMessages);
   });
 
-  
+function findConvo (useremail) {
+  var getRoomIdWitMember= MyConvo.room.find((o,i) => {
+    let members =o.members
+        members = members.find(email => email.email === useremail);
+    return members;
+   });
+
+   return getRoomIdWitMember;
+
+}
+  socket.on('myConvo', (data) => {
+    socket.emit('myConvoResponse',findConvo(data.userEmail));
+   // console.log(data.userEmail);
+  })
+ // socket.on('myConvo', (data) => {socket.broadcast.emit(findConvo(data))})
+
+ // console.log(findConvo('admin@admin.com'));
+//  console.log(MyConvo.room);
+//    var getRoomIdWitMember= MyConvo.room.find((o,i) => {
+//     let members =o.members
+//         members = members.find(email => email.email === 'admin@admin.com');
+//     return members;
+//    });
+//    console.log(getRoomIdWitMember);
+
+
+
+
+
+
+
+
+  //
   //Listens when a new user joins the server
   socket.on('newUser', (data) => {
     //Adds the new user to the list of users

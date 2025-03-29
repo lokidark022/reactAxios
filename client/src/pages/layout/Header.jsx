@@ -12,7 +12,7 @@ const Header = () => {
         <div>
             <Navbar fixed className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                <Navbar.Brand href="#home">Chat App</Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                     

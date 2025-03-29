@@ -5,7 +5,7 @@ import { Card,Row,Col } from 'react-bootstrap';
 
 
 
-const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,userData,ClearTypingStatus}) => {
+const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,userData,ClearTypingStatus,MyConvo}) => {
     
     
     
@@ -26,9 +26,9 @@ const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,use
     useEffect(() =>{
         if(GlobalMessages !== undefined ){
          //   console.log(GlobalMessages[0].text);
-
+         const userEmail = userData.UserData.email;
          socket.emit('newUser', { email:userData.UserData.email, socketID: socket.id });
-        
+         socket.emit('myConvo', {userEmail});
             messages.setMessages(GlobalMessages);
           }
         

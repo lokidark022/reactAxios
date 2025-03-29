@@ -10,7 +10,7 @@ function Messages({socket}) {
   const [messages, setMessages] = useState([]);
   const lastMessageRef = useRef(null);
   const [clearTypingStatus, setClearTypingStatus] = useState(false);
-
+  const [myConvo,setMyConvo] = useState(null);
 
 
   useEffect(() => {
@@ -29,6 +29,8 @@ function Messages({socket}) {
     //console.log(clearTypingStatus);
   }
   useEffect(() => {
+    
+    socket.on('myConvoResponse',(data) => setMyConvo(data));
     socket.on('typingResponse',(data) => TypingStatus(data));
     socket.on('notTypingResponse', () =>  ClearTypingStatus(true));
   }, [socket]);
@@ -50,7 +52,8 @@ function Messages({socket}) {
                   lastMessageRef={lastMessageRef}
                   TypingStatus={{typingStatus, setTypingStatus}}
                   userData={{UserData, setUserData}}
-                  ClearTypingStatus={{clearTypingStatus, setClearTypingStatus}}>
+                  ClearTypingStatus={{clearTypingStatus, setClearTypingStatus}}
+                  MyConvo={{myConvo,setMyConvo}}>
                </MessageBody>
                <MessageFooter socket={socket} userData={UserData}></MessageFooter>
     </div>

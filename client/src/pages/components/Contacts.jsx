@@ -8,17 +8,7 @@ export default function Contacts() {
             List of contacts
             <div style={{height:"100%"}} className="row">
                 <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
-                <Contact ></Contact>
+      
        
 
             </div>

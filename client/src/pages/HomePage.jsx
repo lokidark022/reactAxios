@@ -69,6 +69,7 @@ export default function HomePage() {
 
               <div id='side-col' className="col-lg-3 col-sm-0 d-none d-lg-block ">
                 <Contacts></Contacts>
+                
               </div>
               <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages socket={socket}></Messages> </div>
             </div>
