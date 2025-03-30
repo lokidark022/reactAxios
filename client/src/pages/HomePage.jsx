@@ -17,6 +17,8 @@ export default function HomePage() {
     const {UserData, setUserData} = useContext(UserContext);
     const {UserInfo,setUserInfo} = useContext(UserInfoContext);
     const [toggleSides , setToggleSides] = useState(true);
+    const [myConvo,setMyConvo] = useState(null);
+    const [currentChat, setCurrentChat] = useState('Global');
     useEffect(() => {
       
       setUserInfo(true);
@@ -48,11 +50,11 @@ export default function HomePage() {
     console.log('hide');
 
     }
-
-
-
-
   }
+
+    useEffect(() => {
+      socket.on('myConvoResponse',(data) => setMyConvo(data));
+    }, [socket]);
   return (  
     <div >
        
@@ -68,10 +70,10 @@ export default function HomePage() {
             <div className="row">
 
               <div id='side-col' className="col-lg-3 col-sm-0 d-none d-lg-block ">
-                <Contacts></Contacts>
+                <Contacts MyConvo={{myConvo,setMyConvo}} CurrentChat={{currentChat, setCurrentChat}}></Contacts>
                 
               </div>
-              <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages socket={socket}></Messages> </div>
+              <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages CurrentChat={{currentChat, setCurrentChat}} socket={socket} MyConvo={{myConvo,setMyConvo}}></Messages> </div>
             </div>
           
 

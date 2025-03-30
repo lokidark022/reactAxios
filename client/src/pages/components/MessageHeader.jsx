@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
-const MessageHeader = ({headerData}) => {
+const MessageHeader = ({headerData,CurrentChat}) => {
    // console.log(headerData.HeaderData.length);
 
 
 
     return (
         <div className='m-2 p-2 border' style={{height:"50px"}}>
-          
-            <Nav variant="underline" defaultActiveKey="/home">
+            {CurrentChat.currentChat == 'Global' ? (
+                      <Nav variant="underline" defaultActiveKey="/home">
+                      <Nav.Item>
+                          Global Chats
+                      </Nav.Item>
+                      <Nav.Item>
+                          Active Users: {headerData.HeaderData ? headerData.HeaderData.length : 0}
+                      </Nav.Item>
+      
+      
+                  </Nav>
+            ) : (
+                <Nav variant="underline" defaultActiveKey="/home">
                 <Nav.Item>
-                    Global Chats
+                    {CurrentChat.currentChat}
                 </Nav.Item>
-                <Nav.Item>
-                    Active Users: {headerData.HeaderData ? headerData.HeaderData.length : 0}
-                </Nav.Item>
+           
 
 
             </Nav>
+
+            )}
+
+      
         </div>
     );
 }

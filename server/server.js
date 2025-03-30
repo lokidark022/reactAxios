@@ -138,7 +138,35 @@ let MyConvo = {
         "roomId": "123",
         "members": [
           {
-            "email": "admin3@admin.com"
+            "email": "admin@admin.com"
+          },
+          {
+            "email": "admin4@admin.com"
+          }
+        ],
+        "messages": [
+          {
+            "message": "text",
+            "sender": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "message": "text",
+            "email": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "message": "text",
+            "email": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          }
+        ]
+      } ,
+      {
+        "roomId": "1234",
+        "members": [
+          {
+            "email": "admin5@admin.com"
           },
           {
             "email": "admin4@admin.com"
@@ -179,30 +207,20 @@ socketIO.on('connection', (socket) => {
   });
 
 function findConvo (useremail) {
-  var getRoomIdWitMember= MyConvo.room.find((o,i) => {
-    let members =o.members
-        members = members.find(email => email.email === useremail);
-    return members;
-   });
-
-   return getRoomIdWitMember;
+  let result = [];
+  for (let i=0; i < MyConvo.room.length; i++) {
+    if (MyConvo.room[i].members.find(email => email.email === useremail)){
+      result.push(MyConvo.room[i]);
+    }
 
 }
+ return result
+}
   socket.on('myConvo', (data) => {
-    socket.emit('myConvoResponse',findConvo(data.userEmail));
+  //  console.log(findConvo(data.userEmail));
+   socket.emit('myConvoResponse',findConvo(data.userEmail));
    // console.log(data.userEmail);
   })
- // socket.on('myConvo', (data) => {socket.broadcast.emit(findConvo(data))})
-
- // console.log(findConvo('admin@admin.com'));
-//  console.log(MyConvo.room);
-//    var getRoomIdWitMember= MyConvo.room.find((o,i) => {
-//     let members =o.members
-//         members = members.find(email => email.email === 'admin@admin.com');
-//     return members;
-//    });
-//    console.log(getRoomIdWitMember);
-
 
 
 

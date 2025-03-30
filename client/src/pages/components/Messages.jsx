@@ -3,14 +3,14 @@ import MessageFooter from './MessageFooter'
 import MessageBody from './MessageBody'
 import MessageHeader from './MessageHeader'
 import { UserContext } from '../../context/UserContext'
-function Messages({socket}) {
+function Messages({socket,MyConvo,CurrentChat}) {
   const {UserData, setUserData} = useContext(UserContext);
   const [HeaderData, setHeaderData] = useState();
   const [typingStatus, setTypingStatus] = useState('');
   const [messages, setMessages] = useState([]);
   const lastMessageRef = useRef(null);
   const [clearTypingStatus, setClearTypingStatus] = useState(false);
-  const [myConvo,setMyConvo] = useState(null);
+
 
 
   useEffect(() => {
@@ -30,22 +30,21 @@ function Messages({socket}) {
   }
   useEffect(() => {
     
-    socket.on('myConvoResponse',(data) => setMyConvo(data));
+    socket.on('myConvoResponse',(data) => MyConvo.setMyConvo(data));
     socket.on('typingResponse',(data) => TypingStatus(data));
     socket.on('notTypingResponse', () =>  ClearTypingStatus(true));
   }, [socket]);
-  // useEffect(() =>{
-  //   typingStatusDisplay();
-  // },[typingStatus])
 
-  //console.log(clearTypingStatus);
+  useEffect(() => {
+    console.log('current chat change');
+  },[CurrentChat.currentChat])
 
   return (
 
     <div> 
     
 
-               <MessageHeader headerData={{HeaderData, setHeaderData}}></MessageHeader>
+               <MessageHeader headerData={{HeaderData, setHeaderData}} CurrentChat={CurrentChat}></MessageHeader>
                <MessageBody socket={socket}
                   headerData={{HeaderData, setHeaderData}}
                   messages={{messages, setMessages}}
@@ -53,7 +52,7 @@ function Messages({socket}) {
                   TypingStatus={{typingStatus, setTypingStatus}}
                   userData={{UserData, setUserData}}
                   ClearTypingStatus={{clearTypingStatus, setClearTypingStatus}}
-                  MyConvo={{myConvo,setMyConvo}}>
+                  MyConvo={MyConvo}>
                </MessageBody>
                <MessageFooter socket={socket} userData={UserData}></MessageFooter>
     </div>
