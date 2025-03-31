@@ -3,7 +3,7 @@ import { Nav } from 'react-bootstrap';
 const MessageHeader = ({headerData,CurrentChat}) => {
    // console.log(headerData.HeaderData.length);
 
-
+   // console.log(headerData)
 
     return (
         <div className='m-2 p-2 border' style={{height:"50px"}}>
@@ -13,7 +13,7 @@ const MessageHeader = ({headerData,CurrentChat}) => {
                           Global Chats
                       </Nav.Item>
                       <Nav.Item>
-                          Active Users: {headerData.HeaderData ? headerData.HeaderData.length : 0}
+                          Active Users: {headerData.HeaderData ? headerData.HeaderData.length  : 0}
                       </Nav.Item>
       
       

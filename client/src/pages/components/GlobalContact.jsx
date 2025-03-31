@@ -1,11 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Card ,Image} from 'react-bootstrap';
 import imgsrcWoman from '../assets/woman.png';
 import '../css/style.css';
-export default function GlobalContact({CurrentChat}) {
+import { GlobalMessageContext } from '../../context/UserContext';
+export default function GlobalContact({messages,CurrentChat}) {
+    const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
+    let globalChatLastMessage = '';
+   // console.log(GlobalMessages);
+    if(GlobalMessages){
+      // console.log(GlobalMessages)
+
+        GlobalMessages.length !== 0 ? globalChatLastMessage = GlobalMessages[GlobalMessages.length - 1].message : ''
+       // console.log(globalChatLastMessage);
+    }
+   const changeCurrentState = () => {
+    localStorage.setItem('CurrentChat','Global');
+    CurrentChat.setCurrentChat('Global');
+   }
   return (
-    <div className='col contact-container'>
-        <Card onClick={() => CurrentChat.setCurrentChat('Global')} style={{padding:"5px",margin:"5px"}}>
+    <div className={`col contact-container ${CurrentChat.currentChat == 'Global' ? 'active' : ''}`}>
+        <Card onClick={() => changeCurrentState()} style={{padding:"5px",margin:"5px"}}>
             <div className="container">
                 <div className="row">
                     <div className="col-2">
@@ -15,7 +29,7 @@ export default function GlobalContact({CurrentChat}) {
                     <div className="col-5" style={{fontSize:"10px"}}>active user: </div>
                 </div>
                 <div className="row">
-                    <div className="col"><p>awxdoawudhau hawudawihawdihawdxawxawxxawxdawxdawxawxawxawxdawxdawdlahwdhawdhawiodhxioawhdxoiawhxdioawxhdoaiwxdhaoiwdxhawoidxawduhawxduihawiu</p></div>
+                    <div className="col"><p>{globalChatLastMessage}</p></div>
                 </div>
 
             </div>

@@ -16,6 +16,7 @@ const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext)
         const result = await PostRequestWithHeader('/userinfo','get','userdata');
         setUserData(result);
         const globalMessages = await PostRequestWithHeader('/globalmessage','get','globalmessage');
+      //  console.log(globalMessages);
         setGlobalMessages(globalMessages.message);
        
 

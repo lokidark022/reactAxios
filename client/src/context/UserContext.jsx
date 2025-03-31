@@ -7,7 +7,7 @@ export const UserInfoContext = createContext();
 export const GlobalMessageContext = createContext();
 export default function UserContextProvider ({children}){
   const [UserData, setUserData] = useState({'email':'email@email.com'});
-  const [GlobalMessages ,setGlobalMessages] = useState();
+  const [GlobalMessages ,setGlobalMessages] = useState([]);
   const [UserInfo,setUserInfo] = useState();
   axiosInstance.interceptors.request.use(
     async (config) => {

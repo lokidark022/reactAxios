@@ -6,30 +6,33 @@ import { Card,Row,Col } from 'react-bootstrap';
 
 
 const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,userData,ClearTypingStatus,MyConvo}) => {
-    
+     //   console.log(messages.Messages);
     
     
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
     const [GlobalUsers, setGlobalUsers] = useState([]);
 
 
-
     useEffect(() => {
       
-      socket.on('messageResponse', (data) => messages.setMessages(data));
+      socket.on('messageResponse', (data) => messages.Messages.setMessages(data));
       console.log('clear typing status');
       TypingStatus.setTypingStatus(null);
       var objDiv = document.getElementById("message-body");
         objDiv.scrollTop = objDiv.scrollHeight;
        
-    }, [socket, messages.messages]);
+    }, [socket, messages.Messages.messages]);
     useEffect(() =>{
+      //  console.log(GlobalMessages);
         if(GlobalMessages !== undefined ){
          //   console.log(GlobalMessages[0].text);
          const userEmail = userData.UserData.email;
-         socket.emit('newUser', { email:userData.UserData.email, socketID: socket.id });
+         if(userData.UserData.email != 'email@email.com'){
+            socket.emit('newUser', { email:userData.UserData.email, socketID: socket.id });
+         }
+        
          socket.emit('myConvo', {userEmail});
-            messages.setMessages(GlobalMessages);
+         messages.Messages.setMessages(GlobalMessages);
           }
         
     },[GlobalMessages])
@@ -44,29 +47,33 @@ const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,use
   }, [socket, GlobalUsers]);
 
   useEffect(() => {
+ //   console.log(GlobalUsers);
     headerData.setHeaderData(GlobalUsers);
   },[GlobalUsers])
 
 
-
+  //console.log(messages.Messages.messages);
     return (
     <>
      
             <Row  >
                 <ul   id='message-body' className='message-body'>
-                   {messages.messages.map((message) => message.name === userData.UserData.email?(
+                    
+
+
+                   { messages.Messages.messages.map((message) => message.sender === userData.UserData.email?(
                         
                         <li key={message.id} className=' chat-you'>
                             <h6>You</h6>
-                        <p>{message.text}</p>
+                        <p>{message.message}</p>
 
                         </li>
                 
                     ) : (
 
                         <li key={message.id} className=' chat-other'>
-                            <h6>{message.name}</h6>
-                        <p>{message.text}</p>
+                            <h6>{message.sender}</h6>
+                        <p>{message.message}</p>
 
                         </li>
 
@@ -83,33 +90,6 @@ const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,use
     
     </>
 
-        
-        // <div className='message-body'>
-        //   Global Chat
-     
-        //     {messages.map((message) => message.name === UserData.email?(
-
-        //         <Row>
-                 
-        //             <Col className='m-1 chat-you '>
-        //             <h6>You</h6>
-        //              <p>{message.text}</p>
-        //             </Col>
-        //         </Row>
-         
-        //     ) : (
-
-        //     <Row>
-        //         <Col className='m-1 chat-other'> 
-        //         <h6>{message.name}</h6>
-        //              <p>{message.text}</p>
-        
-        //         </Col>
-        //     </Row>
-      
-        //     ) )}  
-           
-        // </div>
     );
 }
 

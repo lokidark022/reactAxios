@@ -7,8 +7,8 @@ const MessageFooter = ({socket,userData}) => {
     const handleSend = () => {
         if(message !== ''){
             socket.emit('message', {
-                text: message,
-                name: UserData.email,
+                message: message,
+                sender: UserData.email,
                 id: `${socket.id}${Math.random()}`,
                 socketID: socket.id,
               });

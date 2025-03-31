@@ -118,17 +118,20 @@ let MyConvo = {
         ],
         "messages": [
           {
+            "id": "1",
+            "message": "wxadjowiaxdwaidawidohawxdoiawhoi",
+            "sender": "admin@admin.com",
+            "reciever": "admin2@admin.com"
+          },
+          {
+            "id": "2",
             "message": "text",
             "sender": "admin@admin.com",
             "reciever": "admin2@admin.com"
           },
           {
-            "message": "text",
-            "email": "admin@admin.com",
-            "reciever": "admin2@admin.com"
-          },
-          {
-            "message": "text",
+            "id": "3",
+            "message": "awdxwaxdmwaxdmaw;lxdx;lwadxmwa;ldxmwa;lxwa;lxdmwx;ldwa;ldxmwal;xdmwal;xdawdxnwad",
             "email": "admin@admin.com",
             "reciever": "admin2@admin.com"
           }
@@ -146,17 +149,20 @@ let MyConvo = {
         ],
         "messages": [
           {
-            "message": "text",
+            "id": "4",
+            "message": "Hello there",
             "sender": "admin@admin.com",
             "reciever": "admin2@admin.com"
           },
           {
-            "message": "text",
-            "email": "admin@admin.com",
+            "id": "5",
+            "message": "Wazzap",
+            "sender": "admin@admin.com",
             "reciever": "admin2@admin.com"
           },
           {
-            "message": "text",
+            "id": "6",
+            "message": "Hi",
             "email": "admin@admin.com",
             "reciever": "admin2@admin.com"
           }
@@ -174,16 +180,19 @@ let MyConvo = {
         ],
         "messages": [
           {
+            "id": "7",
             "message": "text",
             "sender": "admin@admin.com",
             "reciever": "admin2@admin.com"
           },
           {
+            "id": "8",
             "message": "text",
             "email": "admin@admin.com",
             "reciever": "admin2@admin.com"
           },
           {
+            "id": "9",
             "message": "text",
             "email": "admin@admin.com",
             "reciever": "admin2@admin.com"
@@ -232,7 +241,7 @@ function findConvo (useremail) {
   //Listens when a new user joins the server
   socket.on('newUser', (data) => {
     //Adds the new user to the list of users
-    
+    ActiveUsers = ActiveUsers.filter((user) => user.socketID !== socket.id);
     ActiveUsers.push(data);
     //console.log(ActiveUsers.length);
     //Sends the list of users to the client

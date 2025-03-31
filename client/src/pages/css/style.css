@@ -47,6 +47,7 @@
 
 .contact-container{
     max-width: 120px;
+
 }
 .contact-container:hover {
     opacity: 0.6;
@@ -59,6 +60,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; 
+}
+.active{
+    opacity: 0.6;
+    border-left: solid;
+    border-color: aqua;
+
 }
 
 

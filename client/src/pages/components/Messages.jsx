@@ -3,11 +3,11 @@ import MessageFooter from './MessageFooter'
 import MessageBody from './MessageBody'
 import MessageHeader from './MessageHeader'
 import { UserContext } from '../../context/UserContext'
-function Messages({socket,MyConvo,CurrentChat}) {
+function Messages({Messages,socket,MyConvo,CurrentChat}) {
   const {UserData, setUserData} = useContext(UserContext);
   const [HeaderData, setHeaderData] = useState();
   const [typingStatus, setTypingStatus] = useState('');
-  const [messages, setMessages] = useState([]);
+  // const [messages, setMessages] = useState([]);
   const lastMessageRef = useRef(null);
   const [clearTypingStatus, setClearTypingStatus] = useState(false);
 
@@ -17,7 +17,7 @@ function Messages({socket,MyConvo,CurrentChat}) {
     // 👇️ scroll to bottom every time messages change
     lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
 
-  }, [messages]);
+  }, [Messages.messages]);
 
   function TypingStatus (data) {
     setClearTypingStatus(false);
@@ -30,13 +30,13 @@ function Messages({socket,MyConvo,CurrentChat}) {
   }
   useEffect(() => {
     
-    socket.on('myConvoResponse',(data) => MyConvo.setMyConvo(data));
+ //  socket.on('myConvoResponse',(data) => MyConvo.setMyConvo(data));
     socket.on('typingResponse',(data) => TypingStatus(data));
     socket.on('notTypingResponse', () =>  ClearTypingStatus(true));
   }, [socket]);
 
   useEffect(() => {
-    console.log('current chat change');
+    console.log('current chat change ');
   },[CurrentChat.currentChat])
 
   return (
@@ -47,7 +47,7 @@ function Messages({socket,MyConvo,CurrentChat}) {
                <MessageHeader headerData={{HeaderData, setHeaderData}} CurrentChat={CurrentChat}></MessageHeader>
                <MessageBody socket={socket}
                   headerData={{HeaderData, setHeaderData}}
-                  messages={{messages, setMessages}}
+                  messages={{Messages}}
                   lastMessageRef={lastMessageRef}
                   TypingStatus={{typingStatus, setTypingStatus}}
                   userData={{UserData, setUserData}}
