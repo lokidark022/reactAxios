@@ -3,10 +3,9 @@ import { Card ,Image} from 'react-bootstrap';
 import imgsrcWoman from '../assets/woman.png';
 import '../css/style.css';
 
-export default function Contact({CurrentMessages,CurrentChat,userData,roomMembers,Messages}) {
+export default function Contact({CurrentRoomId,roomId,CurrentMessages,CurrentChat,userData,roomMembers,Messages}) {
     const contactLastMessage = Messages[Messages.length -1].message;
 
-   // console.log(CurrentMessages);
    var email;
    let contactEmail = roomMembers.map(member => member.email !== userData.UserData.email ? member.email : '');
     for (let i = 0; i < contactEmail.length; i++) {
@@ -38,6 +37,7 @@ export default function Contact({CurrentMessages,CurrentChat,userData,roomMember
                 if(SelectedChat == CurrentChat.currentChat) {
                     // console.log(SelectedChat );
                     // console.log(Messages);
+                    CurrentRoomId.setCurrentRoomId(roomId);
                     CurrentMessages.setCurrentMessages(Messages);
                 }
                

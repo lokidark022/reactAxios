@@ -3,7 +3,7 @@ import Contact from './Contact'
 import '../css/style.css'
 import GlobalContact from './GlobalContact'
 import { UserContext } from '../../context/UserContext'
-export default function Contacts({CurrentMessages,Messages,CurrentChat,MyConvo}) {
+export default function Contacts({CurrentRoomId,CurrentMessages,Messages,CurrentChat,MyConvo}) {
 const listContact = MyConvo.myConvo;
 
 const {UserData, setUserData} = useContext(UserContext);
@@ -13,12 +13,12 @@ const {UserData, setUserData} = useContext(UserContext);
         <div className="container list-contact-body">
             List of contacts
             <div style={{height:"100%"}} className="row">
-              <GlobalContact messages={Messages} CurrentChat={CurrentChat}></GlobalContact>
+              <GlobalContact CurrentRoomId={CurrentRoomId} messages={Messages} CurrentChat={CurrentChat}></GlobalContact>
                 {
               
                  listContact ? (
                   listContact.map(room => 
-                    <Contact CurrentMessages={CurrentMessages} userData={{UserData, setUserData}} key={room.roomId} Messages={room.messages} roomMembers={room.members}  CurrentChat={CurrentChat} ></Contact>
+                    <Contact CurrentRoomId={CurrentRoomId} roomId={room.roomId}  CurrentMessages={CurrentMessages} userData={{UserData, setUserData}} key={room.roomId} Messages={room.messages} roomMembers={room.members}  CurrentChat={CurrentChat} ></Contact>
                   )
                  ) : ('')   
                    

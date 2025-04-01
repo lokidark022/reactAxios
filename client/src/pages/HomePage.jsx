@@ -23,6 +23,7 @@ export default function HomePage() {
     const [messages, setMessages] = useState([]);
     const [currentMessages,setCurrentMessages] = useState([]);
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
+    const [currentRoomId, setCurrentRoomId] = useState('');
     useEffect(() => {
       
       setUserInfo(true);
@@ -78,6 +79,7 @@ export default function HomePage() {
       setMessages(currentMessages);
     }, [currentMessages]);
 
+
   return (  
     <div >
        
@@ -93,10 +95,10 @@ export default function HomePage() {
             <div className="row">
 
               <div id='side-col' className="col-lg-3 col-sm-0 d-none d-lg-block ">
-                <Contacts CurrentMessages={{currentMessages,setCurrentMessages}} Messages={{messages, setMessages}} MyConvo={{myConvo,setMyConvo}} CurrentChat={{currentChat, setCurrentChat}}></Contacts>
+                <Contacts CurrentRoomId={{currentRoomId, setCurrentRoomId}} CurrentMessages={{currentMessages,setCurrentMessages}} Messages={{messages, setMessages}} MyConvo={{myConvo,setMyConvo}} CurrentChat={{currentChat, setCurrentChat}}></Contacts>
                 
               </div>
-              <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages Messages={{messages, setMessages}} CurrentChat={{currentChat, setCurrentChat}} socket={socket} MyConvo={{myConvo,setMyConvo}}></Messages> </div>
+              <div id='content-col' className="col-lg-9 col-sm-12 col-xs-12"><Messages CurrentRoomId={{currentRoomId, setCurrentRoomId}} Messages={{messages, setMessages}} CurrentChat={{currentChat, setCurrentChat}} socket={socket} MyConvo={{myConvo,setMyConvo}}></Messages> </div>
             </div>
           
 

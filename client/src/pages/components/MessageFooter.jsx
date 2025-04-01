@@ -1,19 +1,36 @@
 import React, { useContext ,useState} from 'react';
 import { UserContext } from '../../context/UserContext';
 
-const MessageFooter = ({socket,userData}) => {
+const MessageFooter = ({CurrentRoomId,socket,userData}) => {
     const {UserData, setUserData} = useContext(UserContext);
     const [message , setMessage] = useState('');
     const handleSend = () => {
         if(message !== ''){
-            socket.emit('message', {
-                message: message,
-                sender: UserData.email,
-                id: `${socket.id}${Math.random()}`,
-                socketID: socket.id,
-              });
-              setMessage('');
-              document.getElementById('textMessage').value = "";
+            if(CurrentRoomId.currentRoomId && 
+                CurrentRoomId.currentRoomId != '' && 
+                CurrentRoomId.currentRoomId != 'Global'){
+                    //console.log(CurrentRoomId.currentRoomId);
+                    socket.emit('privateMessage',{
+                        roomId:CurrentRoomId.currentRoomId,
+                        message: message,
+                        sender: UserData.email,
+                        id: `${socket.id}${Math.random()}`
+                      });
+
+                }else{
+                    socket.emit('message', {
+                        message: message,
+                        sender: UserData.email,
+                        id: `${socket.id}${Math.random()}`,
+                        socketID: socket.id,
+                      });
+                 
+
+                }
+                setMessage('');
+                document.getElementById('textMessage').value = "";
+
+   
             
         }
 

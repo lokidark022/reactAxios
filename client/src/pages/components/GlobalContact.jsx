@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useContext ,useEffect} from 'react'
 import { Card ,Image} from 'react-bootstrap';
 import imgsrcWoman from '../assets/woman.png';
 import '../css/style.css';
 import { GlobalMessageContext } from '../../context/UserContext';
-export default function GlobalContact({messages,CurrentChat}) {
+export default function GlobalContact({CurrentRoomId,messages,CurrentChat}) {
     const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
     let globalChatLastMessage = '';
    // console.log(GlobalMessages);
@@ -16,7 +16,17 @@ export default function GlobalContact({messages,CurrentChat}) {
    const changeCurrentState = () => {
     localStorage.setItem('CurrentChat','Global');
     CurrentChat.setCurrentChat('Global');
+    CurrentRoomId.setCurrentRoomId('Global');
    }
+   useEffect(() => {
+    const onLoad = () =>{
+        CurrentRoomId.setCurrentRoomId('Global');
+
+    }
+    onLoad();
+
+   }, []);
+
   return (
     <div className={`col contact-container ${CurrentChat.currentChat == 'Global' ? 'active' : ''}`}>
         <Card onClick={() => changeCurrentState()} style={{padding:"5px",margin:"5px"}}>

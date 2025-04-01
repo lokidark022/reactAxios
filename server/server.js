@@ -34,6 +34,11 @@ let users = [
       password: "admin2",
       isAdmin: false,
     },
+    {
+      username: "admin3@admin.com",
+      password: "admin3",
+      isAdmin: false,
+    }
   ];
 
 
@@ -172,10 +177,10 @@ let MyConvo = {
         "roomId": "1234",
         "members": [
           {
-            "email": "admin5@admin.com"
+            "email": "admin3@admin.com"
           },
           {
-            "email": "admin4@admin.com"
+            "email": "admin@admin.com"
           }
         ],
         "messages": [
@@ -232,7 +237,45 @@ function findConvo (useremail) {
   })
 
 
+function findAndUpdateMessages(roomId,messages){
+ // console.log(MyConvo.room.length)
+  for (let i = 0; i < MyConvo.room.length; i++) {
+    if(MyConvo.room[i].roomId == roomId){
+      MyConvo.room[i].messages.push(messages);
+      return MyConvo.room[i].messages;
 
+    }
+    // if(MyConvo.room[i].roomId == roomId){
+   
+    //   result = MyConvo.room[i].messages;
+    //   result.push(messages);
+    // }
+
+  }
+
+
+
+
+}
+
+
+
+  //Join room
+
+    socket.on('join_room', function(data){
+      if(data.roomId && data.roomId != '' && data.roomId !='Global')
+
+      console.log(`User ${data.email} Joined room ${data.roomId}`);
+      socket.join(data.roomId)
+    })
+  //Send message to room
+  socket.on('privateMessage',(data) =>{
+   // console.log(data);
+    //console.log(MyConvo,length);
+    let result = findAndUpdateMessages(data.roomId,{id:data.id, message:data.message,sender:data.sender});
+    // console.log(findAndUpdateMessages(data.roomId,{id:data.id, message:data.message,sender:data.sender}));
+    socketIO.to(data.roomId).emit('privateMessageResponse',result);
+  })
 
 
 

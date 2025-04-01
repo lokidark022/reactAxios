@@ -50,7 +50,7 @@ const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,use
  //   console.log(GlobalUsers);
     headerData.setHeaderData(GlobalUsers);
   },[GlobalUsers])
-
+  console.log(messages.Messages.messages)
 
   //console.log(messages.Messages.messages);
     return (

@@ -3,7 +3,7 @@ import MessageFooter from './MessageFooter'
 import MessageBody from './MessageBody'
 import MessageHeader from './MessageHeader'
 import { UserContext } from '../../context/UserContext'
-function Messages({Messages,socket,MyConvo,CurrentChat}) {
+function Messages({CurrentRoomId,Messages,socket,MyConvo,CurrentChat}) {
   const {UserData, setUserData} = useContext(UserContext);
   const [HeaderData, setHeaderData] = useState();
   const [typingStatus, setTypingStatus] = useState('');
@@ -33,11 +33,18 @@ function Messages({Messages,socket,MyConvo,CurrentChat}) {
  //  socket.on('myConvoResponse',(data) => MyConvo.setMyConvo(data));
     socket.on('typingResponse',(data) => TypingStatus(data));
     socket.on('notTypingResponse', () =>  ClearTypingStatus(true));
+    socket.on('privateMessageResponse',(data) => Messages.setMessages(data));
   }, [socket]);
 
+  
   useEffect(() => {
-    console.log('current chat change ');
-  },[CurrentChat.currentChat])
+    console.log('current chat change and join room');
+      // if(UserData.email !== 'email@email.com'){
+         socket.emit('join_room',{roomId:CurrentRoomId.currentRoomId,email:UserData.email});
+      //   console.log(UserData.email);
+      // }
+      //console.log(CurrentRoomId.currentRoomId);
+  },[CurrentChat.currentChat,CurrentRoomId.currentRoomId])
 
   return (
 
@@ -54,7 +61,7 @@ function Messages({Messages,socket,MyConvo,CurrentChat}) {
                   ClearTypingStatus={{clearTypingStatus, setClearTypingStatus}}
                   MyConvo={MyConvo}>
                </MessageBody>
-               <MessageFooter socket={socket} userData={UserData}></MessageFooter>
+               <MessageFooter CurrentRoomId={CurrentRoomId}  socket={socket} userData={UserData}></MessageFooter>
     </div>
   )
 }
