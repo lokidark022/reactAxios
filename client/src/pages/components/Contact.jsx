@@ -1,76 +1,54 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card ,Image} from 'react-bootstrap';
 import imgsrcWoman from '../assets/woman.png';
 import '../css/style.css';
+import { UserContext } from '../../context/UserContext';
+export default function Contact({MyConvo,RoomId,SelectedContact,room,ThisRoomId}) {
+ const {UserData ,setUserData} =useContext(UserContext);
+ var contactName = '';
 
-export default function Contact({CurrentRoomId,roomId,CurrentMessages,CurrentChat,userData,roomMembers,Messages}) {
-    const contactLastMessage = Messages[Messages.length -1].message;
+ let myMsg = [];
 
-   var email;
-   let contactEmail = roomMembers.map(member => member.email !== userData.UserData.email ? member.email : '');
-    for (let i = 0; i < contactEmail.length; i++) {
-        if(contactEmail[i] !== ""){
-            email = contactEmail[i];
-           // console.log(contactEmail[i])
-        }
-       
+ let myLastMsg = '';
+    for (let index = 0; index < MyConvo.myConvo.length; index++) {
+        if(MyConvo.myConvo[index].roomId == ThisRoomId){
+            myMsg = MyConvo.myConvo[index].messages;
+        }   
     }
-    //console.log(email);
-
-    const handleSetCurrentState = () => {
-        localStorage.setItem('CurrentChat',email);
-        CurrentChat.setCurrentChat(email)
-       
-        
-        CurrentMessages.setCurrentMessages(Messages);
-    }
-    useEffect(() => {
-        const onLoad = () => {
-                let myEmail = roomMembers.map(member => member.email !== userData.UserData.email ? member.email : '');
-                var SelectedChat ;
-                for (let i = 0; i < myEmail.length; i++) {
-                    if(myEmail[i] !== ''){
-                        SelectedChat = myEmail[i];
-                    }
-                    
-                }
-                if(SelectedChat == CurrentChat.currentChat) {
-                    // console.log(SelectedChat );
-                    // console.log(Messages);
-                    CurrentRoomId.setCurrentRoomId(roomId);
-                    CurrentMessages.setCurrentMessages(Messages);
-                }
-               
-       
-                
-            // if(localStorage.getItem('CurrentChat') == CurrentChat.currentChat){
-            //     console.log('loaded message for '+CurrentChat.currentChat)
-            //     CurrentMessages.setCurrentMessages(Messages);
-            // }else{
-            //     console.log('no data');
-            // }
-    
-        }
-        onLoad();
-
-    });
-
+    myLastMsg = myMsg[myMsg.length - 1].message;
+    // for (let index = 0; index < MyConvo.myConvo.length; index++) {
+    //     myRoom.push(MyConvo.myConvo[index].roomId)   
+    // }
+   // console.log(myRoom);
   return (
-    <div className={`col contact-container ${CurrentChat.currentChat == email ? 'active' : ''}`}>
+    <div className='col-12 contact-container' >
 
-        <Card onClick={() => handleSetCurrentState()} style={{padding:"5px",margin:"5px"}}>
+        <Card onClick={() => {
+            SelectedContact.setSelectedContact(contactName);
+            RoomId.setRoomId(room.roomId);
+        }}  style={{padding:"5px",margin:"5px"}}>
             <div className="container">
                 <div className="row">
                     <div className="col-2">
                         <Image style={{height:"25px",width:"25px"}} src={imgsrcWoman} roundedCircle />
                     </div>
-                    <div className="col-7 p-0" style={{fontSize:"10px",textAlign:"left"}}><p>{
-                           roomMembers.map(member => member.email !== userData.UserData.email ? member.email : '')
-                        }</p></div>
+                    <div className="col-7 p-0" style={{fontSize:"10px",textAlign:"left"}}>
+                    {room.members.map(member => {
+                        //member.email != UserData.email ? member.email : '')
+                        if(member.email != UserData.email){
+                            //console.log(member.email);
+                            contactName = member.email;
+                        }
+                    }) }
+
+                    {contactName}
+                
+                    </div>
                     <div className="col-3" style={{fontSize:"10px",textAlign:"right"}}>active</div>
                 </div>
                 <div className="row">
-                    <div className="col"><p>{contactLastMessage}</p></div>
+                  
+                    <div className="col"><p>{myLastMsg}</p></div>
                 </div>
 
             </div>

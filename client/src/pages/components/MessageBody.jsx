@@ -1,92 +1,62 @@
-import React, { useState ,useEffect,useContext} from 'react';
-import { GlobalMessageContext } from '../../context/UserContext';
+import React, { useState ,useEffect,useContext, useRef} from 'react';
+import { GlobalMessageContext, UserContext } from '../../context/UserContext';
 import '../css/message_style.css'
 import { Card,Row,Col } from 'react-bootstrap';
+import { socket } from '../module/socket';
 
 
 
-const MessageBody = ({socket,headerData,messages,lastMessageRef,TypingStatus,userData,ClearTypingStatus,MyConvo}) => {
-     //   console.log(messages.Messages);
-    
-    
-    const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext);
-    const [GlobalUsers, setGlobalUsers] = useState([]);
+
+// const ScrollToBottom = () => {
+//     const elementRef = useRef();
+//     useEffect(() => elementRef.current.scrollIntoView({ behavior: "smooth"}));
+//     return <div ref={elementRef} />;
+// };
+const MessageBody = ({RoomId,MyConvo}) => {
+    const {UserData,setUserData} = useContext(UserContext);
+   let currentMsg = [];
+    MyConvo.myConvo.find(room => {
+        if(room.roomId == RoomId.roomId){
+            currentMsg = room.messages;
+        }
+    })
+
+    console.log(MyConvo.myConvo);
 
 
-    useEffect(() => {
-      
-      socket.on('messageResponse', (data) => messages.Messages.setMessages(data));
-      console.log('clear typing status');
-      TypingStatus.setTypingStatus(null);
-      var objDiv = document.getElementById("message-body");
-        objDiv.scrollTop = objDiv.scrollHeight;
-       
-    }, [socket, messages.Messages.messages]);
-    useEffect(() =>{
-      //  console.log(GlobalMessages);
-        if(GlobalMessages !== undefined ){
-         //   console.log(GlobalMessages[0].text);
-         const userEmail = userData.UserData.email;
-         if(userData.UserData.email != 'email@email.com'){
-            socket.emit('newUser', { email:userData.UserData.email, socketID: socket.id });
-         }
-        
-         socket.emit('myConvo', {userEmail});
-         messages.Messages.setMessages(GlobalMessages);
-          }
-        
-    },[GlobalMessages])
 
-    
-  useEffect(() => {
-    socket.on('newUserResponse', (data) => 
-        setGlobalUsers(data)
 
-);
-   // console.log(GlobalUsers.length);
-  }, [socket, GlobalUsers]);
-
-  useEffect(() => {
- //   console.log(GlobalUsers);
-    headerData.setHeaderData(GlobalUsers);
-  },[GlobalUsers])
-  console.log(messages.Messages.messages)
-
-  //console.log(messages.Messages.messages);
+   // console.log(currentMsg);
     return (
     <>
      
             <Row  >
                 <ul   id='message-body' className='message-body'>
                     
-
-
-                   { messages.Messages.messages.map((message) => message.sender === userData.UserData.email?(
-                        
-                        <li key={message.id} className=' chat-you'>
+                    {currentMsg.map(messages => messages.sender === UserData.email ? (
+                        <li key={messages.id} className=' chat-you'>
                             <h6>You</h6>
-                        <p>{message.message}</p>
+                        <p>{messages.message}</p>
+
+                        </li> 
+                    ):(
+                        <li key={messages.id} className=' chat-other'>
+                            <h6>{messages.sender}</h6>
+                        <p>{messages.message}</p>
 
                         </li>
-                
-                    ) : (
-
-                        <li key={message.id} className=' chat-other'>
-                            <h6>{message.sender}</h6>
-                        <p>{message.message}</p>
-
-                        </li>
-
-                    ) )}  
+                    ))}
+            
+                     {/* <ScrollToBottom /> */}
                 </ul>
 
         </Row>
-        <div ref={lastMessageRef}>
+        {/* <div ref={lastMessageRef}>
         <div id='typingStatus' className="message__status ">
         <p>{ClearTypingStatus.clearTypingStatus ? '' : TypingStatus.typingStatus}</p>
         </div>
 
-        </div>
+        </div> */}
     
     </>
 

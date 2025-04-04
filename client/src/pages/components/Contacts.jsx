@@ -1,30 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useContext,useEffect } from 'react'
 import Contact from './Contact'
 import '../css/style.css'
-import GlobalContact from './GlobalContact'
-import { UserContext } from '../../context/UserContext'
-export default function Contacts({CurrentRoomId,CurrentMessages,Messages,CurrentChat,MyConvo}) {
-const listContact = MyConvo.myConvo;
 
-const {UserData, setUserData} = useContext(UserContext);
+export default function Contacts({RoomId,SelectedContact,MyConvo}) {
+  useEffect(() => {
+  //  console.log(MyConvo.myConvo);
+  }, [MyConvo.myConvo]);
+
 //const globalChatLastMessage = Messages.messages[Messages.messages.length -1].text
   return (
     <div>
         <div className="container list-contact-body">
             List of contacts
             <div style={{height:"100%"}} className="row">
-              <GlobalContact CurrentRoomId={CurrentRoomId} messages={Messages} CurrentChat={CurrentChat}></GlobalContact>
-                {
-              
-                 listContact ? (
-                  listContact.map(room => 
-                    <Contact CurrentRoomId={CurrentRoomId} roomId={room.roomId}  CurrentMessages={CurrentMessages} userData={{UserData, setUserData}} key={room.roomId} Messages={room.messages} roomMembers={room.members}  CurrentChat={CurrentChat} ></Contact>
-                  )
-                 ) : ('')   
-                   
-                }
-                {/* <Contact  CurrentChat={CurrentChat} ></Contact> */}
-      
+            {
+             MyConvo.myConvo.map(room => <Contact MyConvo={MyConvo} RoomId={RoomId} SelectedContact={SelectedContact} key={room.roomId} room={room} ThisRoomId={room.roomId} ></Contact>)
+            }
+           
+
        
 
             </div>

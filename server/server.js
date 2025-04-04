@@ -131,13 +131,13 @@ let MyConvo = {
           {
             "id": "2",
             "message": "text",
-            "sender": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "sender": "admin2@admin.com",
+            "reciever": "admin@admin.com"
           },
           {
             "id": "3",
             "message": "awdxwaxdmwaxdmaw;lxdx;lwadxmwa;ldxmwa;lxwa;lxdmwx;ldwa;ldxmwal;xdmwal;xdawdxnwad",
-            "email": "admin@admin.com",
+            "sender": "admin@admin.com",
             "reciever": "admin2@admin.com"
           }
         ]
@@ -157,19 +157,19 @@ let MyConvo = {
             "id": "4",
             "message": "Hello there",
             "sender": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "reciever": "admin4@admin.com"
           },
           {
             "id": "5",
             "message": "Wazzap",
-            "sender": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "sender": "admin4@admin.com",
+            "reciever": "admin@admin.com"
           },
           {
             "id": "6",
             "message": "Hi",
-            "email": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "sender": "admin4@admin.com",
+            "reciever": "admin@admin.com"
           }
         ]
       } ,
@@ -188,19 +188,19 @@ let MyConvo = {
             "id": "7",
             "message": "text",
             "sender": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "reciever": "admin3@admin.com"
           },
           {
             "id": "8",
             "message": "text",
-            "email": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "sender": "admin@admin.com",
+            "reciever": "admin3@admin.com"
           },
           {
             "id": "9",
             "message": "text",
-            "email": "admin@admin.com",
-            "reciever": "admin2@admin.com"
+            "sender": "admin3@admin.com",
+            "reciever": "admin@admin.com"
           }
         ]
       }
@@ -213,26 +213,24 @@ socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`);
 
 
-  //Listens and logs the message to the console
-  socket.on('message', (data) => {
-    GlobalMessages.push(data);
-    socketIO.emit('messageResponse', GlobalMessages);
- //   console.log(GlobalMessages);
-  });
 
-function findConvo (useremail) {
+
+function myConversationList (useremail) {
   let result = [];
   for (let i=0; i < MyConvo.room.length; i++) {
     if (MyConvo.room[i].members.find(email => email.email === useremail)){
+   
       result.push(MyConvo.room[i]);
+ 
     }
 
 }
  return result
 }
   socket.on('myConvo', (data) => {
-  //  console.log(findConvo(data.userEmail));
-   socket.emit('myConvoResponse',findConvo(data.userEmail));
+   // console.log(myConversationList(data));
+// console.log(findConvo(data.userEmail));
+   socket.emit('myConvoResponse',myConversationList(data));
    // console.log(data.userEmail);
   })
 
@@ -263,43 +261,33 @@ function findAndUpdateMessages(roomId,messages){
   //Join room
 
     socket.on('join_room', function(data){
-      if(data.roomId && data.roomId != '' && data.roomId !='Global')
-
-      console.log(`User ${data.email} Joined room ${data.roomId}`);
-      socket.join(data.roomId)
+      //console.log(data.MyRoom);
+      console.log(`User ${data.email} Joined room  ${data.MyRoom} `);
+      socket.join(data.MyRoom)
     })
   //Send message to room
   socket.on('privateMessage',(data) =>{
-   // console.log(data);
-    //console.log(MyConvo,length);
-    let result = findAndUpdateMessages(data.roomId,{id:data.id, message:data.message,sender:data.sender});
-    // console.log(findAndUpdateMessages(data.roomId,{id:data.id, message:data.message,sender:data.sender}));
-    socketIO.to(data.roomId).emit('privateMessageResponse',result);
+    console.log(data);
+   const uniqueId = Math.random().toString(16).slice(2);
+    let result = findAndUpdateMessages(data.roomId,{id:uniqueId, message:data.message,sender:data.sender});
+
+    const resData = myConversationList(data.sender);
+    let newMsge ;
+    resData.findIndex(x => {
+      if(x.roomId == data.roomId){
+        newMsge = x.messages;
+      }
+    })
+
+  //  console.log(myConversationList(data.sender)[0]);
+    socketIO.to(data.roomId).emit('privateMessageResponse',{newMsg:newMsge,roomId:data.roomId});
+    //socketIO.to(data.roomId).emit('privateMessageResponse',{sender:{myconvo:myConversationList(data.sender),sendername:data.sender},reciever:{myconvo:myConversationList('admin@admin.com'),recievername:'admin@admin.com'}});
+    //socketIO.to(data.roomId).emit('privateMessageResponse',{sender:{myconvo:myConversationList(data.sender),sendername:data.sender},reciever:{myconvo:myConversationList('admin@admin.com'),recievername:'admin@admin.com'}});
   })
 
-
-
-
-  //
-  //Listens when a new user joins the server
-  socket.on('newUser', (data) => {
-    //Adds the new user to the list of users
-    ActiveUsers = ActiveUsers.filter((user) => user.socketID !== socket.id);
-    ActiveUsers.push(data);
-    //console.log(ActiveUsers.length);
-    //Sends the list of users to the client
-    socketIO.emit('newUserResponse', ActiveUsers);
-  });
-  //User typing mode
-  socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
-  socket.on('not_typing', (data) => socket.broadcast.emit('notTypingResponse'));
   socket.on('disconnect', () => {
     console.log('🔥: A user disconnected');
-        //Updates the list of users when a user disconnects from the server
-        ActiveUsers = ActiveUsers.filter((user) => user.socketID !== socket.id);
-        // console.log(users);
-        //Sends the list of users to the client
-        socketIO.emit('newUserResponse', ActiveUsers);
+
   });
 });
 

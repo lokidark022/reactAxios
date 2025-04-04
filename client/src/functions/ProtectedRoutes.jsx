@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { PostRequestWithHeader } from "./Axios";
 import { useEffect,useContext, useState } from "react";
 import { UserContext, UserInfoContext,GlobalMessageContext} from "../context/UserContext";
-
+import { myConvoReq } from "../pages/module/socket";
 const ProtectedRoutes =  () => {
 const {UserInfo,setUserInfo} = useContext(UserInfoContext);
 const {UserData, setUserData} = useContext(UserContext);
@@ -15,13 +15,16 @@ const {GlobalMessages, setGlobalMessages} = useContext(GlobalMessageContext)
        async function fetchData (){
         const result = await PostRequestWithHeader('/userinfo','get','userdata');
         setUserData(result);
+        // setUserData(UserData => [...UserData,{result:'result'}]);
         const globalMessages = await PostRequestWithHeader('/globalmessage','get','globalmessage');
       //  console.log(globalMessages);
         setGlobalMessages(globalMessages.message);
-       
+     
 
         if(result.isValid === true && result !== undefined){
          // console.log('outlete true')
+   
+         myConvoReq(result.email);
           return <Outlet /> ;
         }else{
        //   console.log('outlete false')
